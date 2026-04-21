@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programming Fundamentals — C# Course | MIC Armenia</title>
+  <meta name="description" content="Learn C# programming from scratch at Microsoft Innovation Center Armenia. Referred students get 20% off — 71,200 AMD instead of 89,000 AMD. Starts April 23, 2026." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #080808;
+      --surface:     #111111;
+      --surface2:    #161616;
+      --border:      #222222;
+      --orange:      #f97316;
+      --orange-dk:   #ea6910;
+      --orange-lt:   rgba(249,115,22,.12);
+      --orange-glow: rgba(249,115,22,.28);
+      --white:       #ffffff;
+      --g1:          #e5e7eb;
+      --g2:          #9ca3af;
+      --g3:          #6b7280;
+      --g4:          #374151;
+      --code-bg:     #0d1117;
+      --code-border: #30363d;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+    /* ── NAV ─────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(8,8,8,.94);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--white);
+      font-size: .88rem; font-weight: 700; letter-spacing: .01em;
+    }
+    .nav-mic {
+      background: var(--orange); color: #000;
+      font-size: .65rem; font-weight: 800;
+      padding: 3px 8px; border-radius: 5px; letter-spacing: .07em;
+    }
+    .nav-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--orange); color: #000;
+      border: none; padding: 9px 22px; border-radius: 8px;
+      font-weight: 700; font-size: .85rem; cursor: pointer;
+      font-family: inherit; text-decoration: none;
+      transition: background .15s, transform .15s;
+    }
+    .nav-btn:hover { background: var(--orange-dk); transform: translateY(-1px); }
+    .nav-btn svg { width: 14px; height: 14px; }
+
+    /* ── HERO ────────────────────────────────── */
+    .hero {
+      min-height: 92vh;
+      display: flex; align-items: center;
+      padding: 80px 32px 72px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 50% 60% at 28% 40%, rgba(249,115,22,.11) 0%, transparent 70%),
+        radial-gradient(ellipse 28% 30% at 72% 68%, rgba(249,115,22,.06) 0%, transparent 60%);
+    }
+    .hero::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, black 20%, transparent 100%);
+    }
+    .hero-inner {
+      max-width: 1120px; margin: 0 auto; width: 100%;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 72px; align-items: center;
+      position: relative; z-index: 1;
+    }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--orange-lt); border: 1px solid rgba(249,115,22,.32);
+      color: var(--orange); font-size: .72rem; font-weight: 700;
+      padding: 6px 16px 6px 11px; border-radius: 50px;
+      margin-bottom: 28px; letter-spacing: .05em; text-transform: uppercase;
+    }
+    .badge svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    .hero h1 {
+      font-size: clamp(2.7rem, 5vw, 4rem);
+      font-weight: 900; line-height: 1.08;
+      letter-spacing: -.03em; margin-bottom: 22px;
+    }
+    .hero h1 .accent { color: var(--orange); }
+
+    .hero-desc {
+      font-size: 1rem; color: var(--g2);
+      max-width: 460px; margin-bottom: 36px; line-height: 1.88;
+    }
+    .hero-desc strong { color: var(--white); }
+
+    .price-card {
+      display: inline-flex; align-items: center; gap: 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px 28px; margin-bottom: 34px;
+    }
+    .price-old {
+      font-size: 1rem; color: var(--g3); text-decoration: line-through;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .price-sep { color: var(--g4); }
+    .price-new {
+      font-size: 2.1rem; font-weight: 800; color: var(--orange);
+      line-height: 1; font-family: 'JetBrains Mono', monospace;
+    }
+    .price-new small { font-size: .95rem; font-weight: 600; }
+    .price-save {
+      background: rgba(249,115,22,.16); color: var(--orange);
+      font-size: .7rem; font-weight: 800;
+      padding: 4px 10px; border-radius: 6px;
+      align-self: flex-start;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--orange); color: #000;
+      font-weight: 800; font-size: 1rem;
+      padding: 15px 42px; border-radius: 12px;
+      text-decoration: none; border: none; cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 0 40px var(--orange-glow);
+      transition: transform .2s, box-shadow .2s, background .15s;
+    }
+    .hero-cta:hover { background: var(--orange-dk); transform: translateY(-3px); box-shadow: 0 10px 56px rgba(249,115,22,.45); }
+    .hero-cta svg { width: 16px; height: 16px; }
+
+    .hero-note {
+      margin-top: 16px; font-size: .79rem; color: var(--g3);
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    }
+    .hero-note-item { display: flex; align-items: center; gap: 5px; }
+    .hero-note-item svg { width: 12px; height: 12px; color: var(--orange); }
+
+    /* Code window */
+    .code-window {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 14px; overflow: hidden;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: .8rem; line-height: 1.72;
+      box-shadow: 0 24px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(249,115,22,.05);
+    }
+    .cw-header {
+      background: #161b22; padding: 12px 16px;
+      display: flex; align-items: center; gap: 7px;
+      border-bottom: 1px solid var(--code-border);
+    }
+    .cdot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+    .cdot-r { background: #ff5f57; }
+    .cdot-y { background: #febc2e; }
+    .cdot-g { background: #28c840; }
+    .cw-filename { margin-left: 10px; color: #8b949e; font-size: .74rem; }
+    .cw-body { padding: 20px 22px; color: #e6edf3; overflow-x: auto; }
+    .cw-body pre { margin: 0; white-space: pre; }
+    .ln { color: #3a3f4a; user-select: none; display: inline-block; width: 18px; text-align: right; margin-right: 16px; }
+    .ck { color: #f97316; }
+    .ct { color: #79c0ff; }
+    .cs { color: #a5d6ff; }
+    .cn { color: #ffa657; }
+    .cc { color: #5a6270; font-style: italic; }
+    .cm { color: #d2a8ff; }
+
+    /* ── STATS ───────────────────────────────── */
+    .stats {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+    }
+    .stats-inner {
+      max-width: 1120px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; justify-content: center;
+    }
+    .stat {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 24px 44px; border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-v {
+      font-size: 1.65rem; font-weight: 800; color: var(--orange);
+      line-height: 1; font-family: 'JetBrains Mono', monospace;
+    }
+    .stat-l {
+      font-size: .7rem; color: var(--g3); margin-top: 5px;
+      text-align: center; text-transform: uppercase; letter-spacing: .05em;
+    }
+
+    /* ── SECTIONS ────────────────────────────── */
+    section { padding: 96px 32px; }
+    .inner { max-width: 1120px; margin: 0 auto; }
+
+    .sec-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--orange-lt); border: 1px solid rgba(249,115,22,.26);
+      color: var(--orange); font-size: .68rem; font-weight: 700;
+      padding: 4px 12px; border-radius: 50px; margin-bottom: 14px;
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+    .sec-tag svg { width: 11px; height: 11px; }
+
+    h2 {
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 800; line-height: 1.18;
+      letter-spacing: -.025em; margin-bottom: 14px;
+    }
+    .lead {
+      font-size: .97rem; color: var(--g2);
+      max-width: 640px; margin-bottom: 52px; line-height: 1.88;
+    }
+
+    /* ── WHY LEARN ───────────────────────────── */
+    .why-bg { background: var(--bg); }
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .why-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 30px;
+      transition: border-color .2s, transform .2s;
+    }
+    .why-card:hover { border-color: rgba(249,115,22,.4); transform: translateY(-4px); }
+    .why-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: var(--orange-lt); border: 1px solid rgba(249,115,22,.22);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--orange); margin-bottom: 20px;
+    }
+    .why-icon svg { width: 22px; height: 22px; }
+    .why-card h3 { font-size: 1.02rem; font-weight: 700; margin-bottom: 10px; }
+    .why-card p { font-size: .875rem; color: var(--g2); line-height: 1.82; }
+
+    /* ── OUTCOMES ────────────────────────────── */
+    .out-bg {
+      background: var(--surface2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .out-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .out-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 16px; padding: 30px;
+      position: relative; overflow: hidden;
+      transition: border-color .2s;
+    }
+    .out-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px; background: linear-gradient(90deg, var(--orange), transparent);
+    }
+    .out-card:hover { border-color: rgba(249,115,22,.35); }
+    .out-num {
+      font-size: .73rem; font-weight: 600; color: var(--g4);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: .04em; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .out-num .num-val { color: var(--orange); font-weight: 700; }
+    .out-card h3 { font-size: 1.02rem; font-weight: 700; margin-bottom: 10px; }
+    .out-card p { font-size: .875rem; color: var(--g2); line-height: 1.82; }
+
+    /* ── SCHEDULE ────────────────────────────── */
+    .sched-bg { background: var(--bg); }
+    .sched-card {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 16px; overflow: hidden; max-width: 600px;
+    }
+    .sched-header {
+      background: #161b22; padding: 13px 18px;
+      display: flex; align-items: center; gap: 7px;
+      border-bottom: 1px solid var(--code-border);
+    }
+    .sched-dots { display: flex; gap: 6px; }
+    .sched-title {
+      margin-left: 10px;
+      font-size: .75rem; color: #8b949e;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .sched-row {
+      display: flex; align-items: center;
+      padding: 13px 20px; gap: 14px;
+      border-bottom: 1px solid rgba(48,54,61,.65);
+    }
+    .sched-row:last-child { border-bottom: none; }
+    .sched-ico {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(249,115,22,.10);
+      border: 1px solid rgba(249,115,22,.18);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--orange); flex-shrink: 0;
+    }
+    .sched-ico svg { width: 15px; height: 15px; }
+    .sched-k {
+      font-size: .72rem; color: #8b949e;
+      width: 150px; flex-shrink: 0;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .sched-v {
+      font-size: .9rem; font-weight: 600; color: #e6edf3;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .soon {
+      background: var(--orange); color: #000;
+      font-size: .63rem; font-weight: 800;
+      padding: 2px 9px; border-radius: 50px;
+      margin-left: 8px; font-family: 'Inter', sans-serif;
+      letter-spacing: .03em; vertical-align: middle;
+    }
+
+    /* ── INSTRUCTOR ──────────────────────────── */
+    .inst-bg {
+      background: var(--surface2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .inst-card {
+      display: flex; gap: 32px; align-items: flex-start;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 36px; max-width: 760px;
+    }
+    .avatar {
+      width: 88px; height: 88px; border-radius: 50%;
+      background: var(--orange-lt); border: 2px solid var(--orange);
+      color: var(--orange); font-size: 1.45rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-family: 'JetBrains Mono', monospace;
+      letter-spacing: -.02em;
+    }
+    .inst-name { font-size: 1.3rem; font-weight: 800; margin-bottom: 4px; }
+    .inst-role { font-size: .875rem; color: var(--orange); font-weight: 600; margin-bottom: 18px; }
+    .inst-bio { font-size: .9rem; color: var(--g2); line-height: 1.88; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .tag {
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--g2); font-size: .76rem; font-weight: 600;
+      padding: 4px 12px; border-radius: 50px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── FORM ────────────────────────────────── */
+    .form-bg { background: var(--bg); }
+    .form-wrap {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 24px; padding: 44px; max-width: 600px;
+      box-shadow: 0 0 80px rgba(249,115,22,.07);
+    }
+    .disc-pill {
+      display: flex; align-items: flex-start; gap: 13px;
+      background: rgba(249,115,22,.08);
+      border: 1px solid rgba(249,115,22,.26);
+      border-radius: 12px; padding: 15px 18px; margin-bottom: 28px;
+    }
+    .disc-icon { color: var(--orange); flex-shrink: 0; margin-top: 1px; }
+    .disc-icon svg { width: 20px; height: 20px; }
+    .disc-txt { font-size: .875rem; color: var(--g1); line-height: 1.68; }
+    .disc-txt strong { color: var(--orange); }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .fg { display: flex; flex-direction: column; gap: 7px; }
+    .fg.full { grid-column: 1 / -1; }
+    label { font-size: .8rem; font-weight: 600; color: var(--g2); letter-spacing: .01em; }
+    .opt { font-weight: 400; color: var(--g4); margin-left: 4px; }
+    input {
+      width: 100%; padding: 12px 16px;
+      background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: 10px; color: var(--white);
+      font-size: .93rem; font-family: inherit;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    input::placeholder { color: var(--g4); }
+    input:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(249,115,22,.13); }
+
+    .sub-btn {
+      width: 100%; margin-top: 12px;
+      background: var(--orange); color: #000;
+      border: none; padding: 16px;
+      border-radius: 12px; font-size: 1rem; font-weight: 800;
+      font-family: inherit; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background .15s, transform .15s;
+    }
+    .sub-btn svg { width: 17px; height: 17px; }
+    .sub-btn:hover { background: var(--orange-dk); transform: translateY(-1px); }
+    .sub-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+    .form-note {
+      font-size: .75rem; color: var(--g4);
+      text-align: center; margin-top: 12px;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .form-note svg { width: 12px; height: 12px; color: var(--g3); }
+
+    /* ── SUCCESS ─────────────────────────────── */
+    #successBox { display: none; text-align: center; padding: 16px 0; }
+    .success-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: rgba(249,115,22,.12); border: 2px solid var(--orange);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--orange); margin: 0 auto 20px;
+    }
+    .success-icon svg { width: 36px; height: 36px; }
+    #successBox h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; }
+    #successBox p { color: var(--g2); font-size: .95rem; line-height: 1.78; }
+
+    /* ── FOOTER ──────────────────────────────── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center; padding: 28px 32px;
+      color: var(--g3); font-size: .82rem;
+    }
+    footer a { color: var(--g2); text-decoration: none; }
+    footer a:hover { color: var(--orange); }
+    .footer-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem; color: var(--g4); margin-top: 8px;
+    }
+    .footer-code .ck { color: var(--orange); }
+    .footer-code .cs { color: #5a8a6a; }
+
+    /* ── RESPONSIVE ──────────────────────────── */
+    @media (max-width: 880px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero { min-height: auto; padding: 72px 24px 60px; }
+      nav { padding: 0 20px; }
+    }
+    @media (max-width: 600px) {
+      .stats-inner { flex-direction: column; }
+      .stat { border-right: none; border-bottom: 1px solid var(--border); padding: 18px 24px; }
+      .stat:last-child { border-bottom: none; }
+      .inst-card { flex-direction: column; padding: 24px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-wrap { padding: 24px; }
+      .price-card { flex-wrap: wrap; justify-content: center; gap: 10px; padding: 14px 20px; }
+      section { padding: 72px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ───────────────────────────────────────────────────────────────── -->
+<nav>
+  <a class="nav-brand" href="#">
+    Microsoft Innovation Center
+    <span class="nav-mic">MIC</span>
+  </a>
+  <a class="nav-btn" href="#register">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <line x1="19" y1="8" x2="19" y2="14"/>
+      <line x1="22" y1="11" x2="16" y2="11"/>
+    </svg>
+    Register Now
+  </a>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <!-- Left: copy -->
+    <div class="hero-left">
+      <div class="badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+          <line x1="7" y1="7" x2="7.01" y2="7"/>
+        </svg>
+        Referral Offer &mdash; 20% Discount
+      </div>
+
+      <h1>
+        Programming<br />
+        <span class="accent">Fundamentals</span>
+      </h1>
+
+      <p class="hero-desc">
+        Share this page with a friend. They register — they receive a
+        <strong>20% discount</strong> on tuition, exclusively through your referral.
+        Learn C# from an industry engineer in a cohort of 12–15 students.
+      </p>
+
+      <div class="price-card">
+        <div class="price-old">89,000 &#1423;</div>
+        <div class="price-sep">&rarr;</div>
+        <div class="price-new">71,200 <small>&#1423;</small></div>
+        <div class="price-save">&minus;20%</div>
+      </div>
+
+      <br />
+      <a class="hero-cta" href="#register">
+        Secure Your Seat
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+
+      <p class="hero-note">
+        <span class="hero-note-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Limited to 12–15 seats
+        </span>
+        <span class="hero-note-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Starts April 23, 2026
+        </span>
+      </p>
+    </div>
+
+    <!-- Right: code window -->
+    <div class="hero-right">
+      <div class="code-window">
+        <div class="cw-header">
+          <span class="cdot cdot-r"></span>
+          <span class="cdot cdot-y"></span>
+          <span class="cdot cdot-g"></span>
+          <span class="cw-filename">Course.cs</span>
+        </div>
+        <div class="cw-body">
+<pre><span class="ck">using</span> <span class="ct">System</span>;
+
+<span class="ck">namespace</span> <span class="ct">MIC</span>.Armenia
+{
+  <span class="ck">class</span> <span class="ct">Course</span>
+  {
+    <span class="ck">string</span>   Name  = <span class="cs">"Programming Fundamentals"</span>;
+    <span class="ct">DateTime</span> Start = <span class="ck">new</span> <span class="ct">DateTime</span>(<span class="cn">2026</span>, <span class="cn">4</span>, <span class="cn">23</span>);
+    <span class="ck">decimal</span>  Price = <span class="cn">71_200m</span>; <span class="cc">// 20% off</span>
+    <span class="ck">int</span>      Seats = <span class="cn">15</span>;      <span class="cc">// limited spots</span>
+
+    <span class="ck">void</span> <span class="cm">Enroll</span>(<span class="ck">string</span> student)
+    {
+      <span class="ct">Console</span>.<span class="cm">WriteLine</span>(
+        <span class="cs">$"Welcome, {student}!"</span>
+      );
+      <span class="ct">Console</span>.<span class="cm">WriteLine</span>(
+        <span class="cs">"See you on April 23."</span>
+      );
+    }
+  }
+}</pre>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── STATS ──────────────────────────────────────────────────────────────── -->
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stat">
+      <div class="stat-v">20</div>
+      <div class="stat-l">Lessons</div>
+    </div>
+    <div class="stat">
+      <div class="stat-v">2 hrs</div>
+      <div class="stat-l">Per session</div>
+    </div>
+    <div class="stat">
+      <div class="stat-v">19:30</div>
+      <div class="stat-l">Evening classes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-v">Apr 23</div>
+      <div class="stat-l">Start date</div>
+    </div>
+    <div class="stat">
+      <div class="stat-v">C#</div>
+      <div class="stat-l">Language</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WHY LEARN ──────────────────────────────────────────────────────────── -->
+<section class="why-bg">
+  <div class="inner">
+    <span class="sec-tag">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      Why This Course
+    </span>
+    <h2>Why Learn to Code?</h2>
+    <p class="lead">
+      Software is the engine behind every modern industry. Whether you want to build a career,
+      launch a product, or simply think more systematically — programming is the single highest-leverage skill you can acquire right now.
+    </p>
+    <div class="why-grid">
+
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2"/>
+            <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
+          </svg>
+        </div>
+        <h3>High-Demand Career</h3>
+        <p>
+          Armenia's tech sector is expanding rapidly. Junior C# developers earn from
+          1,000,000 AMD/month — and that number grows quickly with experience.
+        </p>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="6" height="6"/>
+            <rect x="2" y="2" width="20" height="20" rx="2"/>
+            <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>
+          </svg>
+        </div>
+        <h3>Logical Problem Solving</h3>
+        <p>
+          Programming trains you to decompose any complex challenge into precise,
+          systematic steps — a mental model that applies well beyond software.
+        </p>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"/>
+            <polyline points="8 6 2 12 8 18"/>
+          </svg>
+        </div>
+        <h3>Industry-Standard Tools</h3>
+        <p>
+          Graduate fluent in C#, .NET, and Visual Studio — the exact stack that Armenian
+          tech companies use and interview for. No abstract theory, only real skills.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── OUTCOMES ───────────────────────────────────────────────────────────── -->
+<section class="out-bg">
+  <div class="inner">
+    <span class="sec-tag">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+      Curriculum
+    </span>
+    <h2>What You Will Learn</h2>
+    <p class="lead">
+      20 hands-on sessions designed to take you from zero to a confident junior developer —
+      covering both the theory and the daily tools of professional software engineering.
+    </p>
+    <div class="out-grid">
+
+      <div class="out-card">
+        <div class="out-num">// <span class="num-val">01</span></div>
+        <h3>Language &amp; Logic Foundations</h3>
+        <p>
+          Variables, data types, conditionals, loops, and the C# syntax that forms
+          the backbone of every program you will ever write.
+        </p>
+      </div>
+
+      <div class="out-card">
+        <div class="out-num">// <span class="num-val">02</span></div>
+        <h3>How Computers Actually Work</h3>
+        <p>
+          Memory, processes, the file system, and how source code becomes a running
+          program — knowledge that separates junior from senior developers.
+        </p>
+      </div>
+
+      <div class="out-card">
+        <div class="out-num">// <span class="num-val">03</span></div>
+        <h3>Applied C# Development</h3>
+        <p>
+          Write, run, and debug real programs. Master arrays, methods, OOP principles,
+          and Visual Studio — the industry-standard IDE — with project-based assignments.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SCHEDULE ───────────────────────────────────────────────────────────── -->
+<section class="sched-bg">
+  <div class="inner">
+    <span class="sec-tag">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      Schedule
+    </span>
+    <h2>Course Schedule</h2>
+    <p class="lead">Evening sessions designed to fit around a full working day.</p>
+
+    <div class="sched-card">
+      <div class="sched-header">
+        <div class="sched-dots">
+          <span class="cdot cdot-r"></span>
+          <span class="cdot cdot-y"></span>
+          <span class="cdot cdot-g"></span>
+        </div>
+        <span class="sched-title">schedule.json</span>
+      </div>
+
+      <div class="sched-row">
+        <div class="sched-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <div class="sched-k">days</div>
+        <div class="sched-v">Tuesday &middot; Thursday &middot; Saturday</div>
+      </div>
+
+      <div class="sched-row">
+        <div class="sched-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div class="sched-k">time</div>
+        <div class="sched-v">19:30 &ndash; 21:30</div>
+      </div>
+
+      <div class="sched-row">
+        <div class="sched-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+            <polyline points="2 17 12 22 22 17"/>
+            <polyline points="2 12 12 17 22 12"/>
+          </svg>
+        </div>
+        <div class="sched-k">duration</div>
+        <div class="sched-v">20 lessons &times; 2 hours</div>
+      </div>
+
+      <div class="sched-row">
+        <div class="sched-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polygon points="10 8 16 12 10 16 10 8"/>
+          </svg>
+        </div>
+        <div class="sched-k">start_date</div>
+        <div class="sched-v">April 23, 2026 <span class="soon">SOON</span></div>
+      </div>
+
+      <div class="sched-row">
+        <div class="sched-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+          </svg>
+        </div>
+        <div class="sched-k">language</div>
+        <div class="sched-v">Armenian</div>
+      </div>
+
+      <div class="sched-row">
+        <div class="sched-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </div>
+        <div class="sched-k">includes</div>
+        <div class="sched-v">Practical assignments + mentor Q&amp;A</div>
+      </div>
+
+      <div class="sched-row">
+        <div class="sched-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+        </div>
+        <div class="sched-k">class_size</div>
+        <div class="sched-v">12 &ndash; 15 participants (limited)</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── INSTRUCTOR ─────────────────────────────────────────────────────────── -->
+<section class="inst-bg">
+  <div class="inner">
+    <span class="sec-tag">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      Your Instructor
+    </span>
+    <h2>Meet Your Instructor</h2>
+
+    <div class="inst-card">
+      <div class="avatar">AB</div>
+      <div>
+        <div class="inst-name">Armen Barkhoudaryan</div>
+        <div class="inst-role">Full-Stack Software Engineer &bull; Inecobank</div>
+        <p class="inst-bio">
+          Armen brings over 10 years of hands-on software development experience to every session.
+          Currently working as a Full-Stack Software Engineer at Inecobank, he has been teaching
+          programming at Microsoft Innovation Center for more than 5 years. His teaching style
+          is practical and student-focused — he builds confidence by solving real problems,
+          not by reciting theory. Past students credit him with making complex concepts genuinely accessible.
+        </p>
+        <div class="tags">
+          <span class="tag">C# / .NET</span>
+          <span class="tag">10+ yrs industry</span>
+          <span class="tag">5+ yrs teaching</span>
+          <span class="tag">Inecobank</span>
+          <span class="tag">MIC Armenia</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FORM ───────────────────────────────────────────────────────────────── -->
+<section class="form-bg" id="register">
+  <div class="inner">
+    <span class="sec-tag">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <line x1="19" y1="8" x2="19" y2="14"/>
+        <line x1="22" y1="11" x2="16" y2="11"/>
+      </svg>
+      Registration
+    </span>
+    <h2>Register Your Spot</h2>
+    <p class="lead">Fill in your details below and lock in your 20% referral discount.</p>
+
+    <div class="form-wrap">
+
+      <!-- Success state -->
+      <div id="successBox">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <h3>Registration Received</h3>
+        <p>
+          Your spot has been saved.<br />
+          We will be in touch shortly with next steps.
+        </p>
+      </div>
+
+      <!-- Form -->
+      <form id="regForm">
+        <div class="disc-pill">
+          <div class="disc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+              <line x1="7" y1="7" x2="7.01" y2="7"/>
+            </svg>
+          </div>
+          <div class="disc-txt">
+            <strong>20% discount is applied automatically.</strong>
+            Full price is 89,000 &#1423; — by registering through this page
+            your tuition is <strong>71,200 &#1423;</strong>. No code needed.
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="fg">
+            <label for="fn">First Name <span style="color:var(--orange)">*</span></label>
+            <input type="text" id="fn" placeholder="Your first name" required autocomplete="given-name" />
+          </div>
+          <div class="fg">
+            <label for="ln">Last Name <span style="color:var(--orange)">*</span></label>
+            <input type="text" id="ln" placeholder="Your last name" required autocomplete="family-name" />
+          </div>
+          <div class="fg full">
+            <label for="em">Email Address <span style="color:var(--orange)">*</span></label>
+            <input type="email" id="em" placeholder="you@example.com" required autocomplete="email" />
+          </div>
+          <div class="fg full">
+            <label for="ph">Phone Number <span style="color:var(--orange)">*</span></label>
+            <input type="tel" id="ph" placeholder="+374 XX XXX XXX" required autocomplete="tel" />
+          </div>
+          <div class="fg full">
+            <label for="ref">Referred By <span class="opt">(optional)</span></label>
+            <input type="text" id="ref" placeholder="Name of the person who sent you this link" />
+          </div>
+        </div>
+
+        <button type="submit" class="sub-btn" id="sbtn">
+          <span id="sbtnTxt">Confirm Registration</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+
+        <p class="form-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0110 0v4"/>
+          </svg>
+          Your information is kept private and will never be shared.
+        </p>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────────────── -->
+<footer>
+  <p>
+    &copy; 2026 <a href="https://mic.am" target="_blank" rel="noopener">Microsoft Innovation Center Armenia</a>
+    &nbsp;&middot;&nbsp; All rights reserved.
+  </p>
+  <p class="footer-code"><span class="ck">const</span> course = <span class="cs">"Programming Fundamentals"</span>; <span style="color:#3a3f4a">// April 23, 2026</span></p>
+</footer>
+
+<script>
+  // ── Replace with your deployed Apps Script Web App URL ───────────────────
+  const WEBHOOK = 'https://script.google.com/macros/s/AKfycbyEeMn3h58hlm2HDbNVwyx7Y02jRMc8SR4khu6uxRtxWC8t5_ZBfBIYGjciMWYFxeMZ/exec';
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const form = document.getElementById('regForm');
+  const box  = document.getElementById('successBox');
+  const btn  = document.getElementById('sbtn');
+  const bTxt = document.getElementById('sbtnTxt');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.disabled = true;
+    bTxt.textContent = 'Submitting\u2026';
+
+    const payload = {
+      firstName:  document.getElementById('fn').value.trim(),
+      lastName:   document.getElementById('ln').value.trim(),
+      email:      document.getElementById('em').value.trim(),
+      phone:      document.getElementById('ph').value.trim(),
+      referredBy: document.getElementById('ref').value.trim(),
+      timestamp:  new Date().toISOString(),
+      source:     'pfb-referral-2026'
+    };
+
+    try {
+      await fetch(WEBHOOK, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (_) { /* no-cors opaque response — data is still saved */ }
+
+    form.style.display = 'none';
+    box.style.display  = 'block';
+  });
+</script>
+
+</body>
+</html>
