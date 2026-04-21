@@ -73,6 +73,17 @@
     }
     .nav-btn:hover { background: var(--orange-dk); transform: translateY(-1px); }
     .nav-btn svg { width: 14px; height: 14px; }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .lang-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: transparent; color: var(--g2);
+      border: 1px solid var(--border); padding: 7px 14px; border-radius: 8px;
+      font-weight: 600; font-size: .82rem; cursor: pointer;
+      font-family: inherit; text-decoration: none;
+      transition: border-color .15s, color .15s;
+    }
+    .lang-btn:hover { border-color: var(--orange); color: var(--orange); }
+    .lang-btn svg { width: 13px; height: 13px; }
 
     /* ── HERO ────────────────────────────────── */
     .hero {
@@ -478,7 +489,16 @@
     Microsoft Innovation Center
     <span class="nav-mic">MIC</span>
   </a>
-  <a class="nav-btn" href="#register">
+  <div class="nav-right">
+    <a class="lang-btn" href="index.html" title="Անցնել հայերեն">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="2" y1="12" x2="22" y2="12"/>
+        <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+      </svg>
+      ՀՅ
+    </a>
+    <a class="nav-btn" href="#register">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/>
       <circle cx="9" cy="7" r="4"/>
@@ -487,6 +507,7 @@
     </svg>
     Register Now
   </a>
+  </div>
 </nav>
 
 <!-- ── HERO ──────────────────────────────────────────────────────────────── -->
@@ -515,9 +536,9 @@
       </p>
 
       <div class="price-card">
-        <div class="price-old">89,000 AMD;</div>
+        <div class="price-old">89,000 &#1423;</div>
         <div class="price-sep">&rarr;</div>
-        <div class="price-new">71,200 <small>AMD;</small></div>
+        <div class="price-new">71,200 <small>&#1423;</small></div>
         <div class="price-save">&minus;20%</div>
       </div>
 
@@ -910,8 +931,8 @@
           </div>
           <div class="disc-txt">
             <strong>20% discount is applied automatically.</strong>
-            Full price is 89,000 AMD; — by registering through this page
-            your tuition is <strong>71,200 AMD;</strong>. No code needed.
+            Full price is 89,000 &#1423; — by registering through this page
+            your tuition is <strong>71,200 &#1423;</strong>. No code needed.
           </div>
         </div>
 
